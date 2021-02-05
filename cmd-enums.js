@@ -50,23 +50,21 @@ var Cmd = (function () {
 		'after_effects_es_ES.dat',
 	].join('/')
 	var file = readFile(filePath)
-	var commands = {}
 	var lines = file.split('\n')
-	for (var i = 0; i < lines.length; i++) {
+	var commands = {}
+	var i, len = lines.length
+	for (i = 0; i < len; i++) {
 		var line = lines[i]
-		// line = "$$$/AE/MenuID/0002/Export_2494=E&xportar"
-		if (line.indexOf('MenuID') != -1) {
-			var a = line.split('/') // REGEX: var data = line.match(/[a-z|A-Z|0-9]*\_[0-9]*/g)
-			var b = a[a.length - 1].split('=')
-			var c = b[0].split('_')
-			var name = c[0] // REGEX: var name = data[0].match(/[a-z|A-Z|0-9]*\_/g)[0].slice(0, -1)
-			var number = c[1] // REGEX: var number = data[0].match(/\_[0-9]*/g)[0].substr(1)
-			if (number !== undefined && name !== 'MacAppMenu') {
-				var snakeCase = camelToSnake(name)
-				var exists = commands[snakeCase] != undefined
-				if (!exists) {
-					commands[snakeCase] = parseInt(number)
-				}
+		var isMenuID = line.indexOf('/MenuID') != -1
+		if (isMenuID) {
+			line = line.substring(line.lastIndexOf('/') + 1)
+			var data = line.match(/[a-z|A-Z|0-9]*\_[0-9]*/g)
+			if (data) {
+				var name = data[0].match(/[a-z|A-Z|0-9]*\_/g)[0].slice(0, -1)
+				var number = data[0].match(/\_[0-9]*/g)[0].substr(1)
+				var cmd = camelToSnake(name)
+				var id = parseInt(number)
+				if (!isNaN(id)) commands[cmd] = id
 			}
 		}
 	}

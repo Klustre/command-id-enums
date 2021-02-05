@@ -11,6 +11,7 @@ app.executeCommand(Cmd.SCRIPTS_EXPRESSIONS)
 ### Disclaimer
 - Not tested on Windows
 - Excludes duplicates despite them having a unique ID
+- Many command IDs are missing
 
 ### Output
 Short example of the output below; check [example.json](https://github.com/Klustre/command-id-enums/blob/main/example.json) for a full list (generated in AE 17.6).
